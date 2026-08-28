@@ -1,5 +1,4 @@
 # AI-Powered-Task-Knowledge-Management-System
-# AI Task & Knowledge MVP
 
 ## Local setup
 
@@ -74,20 +73,6 @@ Generate placeholder screenshots with:
 ```
 
 Generated screenshots are saved to `backend/docs/screenshots`.
-
-## Screenshots
-
-### Frontend application
-
-![Frontend application](docs/screenshots/frontend.png)
-
-### API documentation
-
-![Swagger API documentation](docs/screenshots/backend.png)
-
-### API authorization
-
-![API authorization dialog](proj5.png)
 
 ## API endpoints
 
