@@ -74,6 +74,16 @@ Generate placeholder screenshots with:
 
 Generated screenshots are saved to `backend/docs/screenshots`.
 
+## Screenshots
+
+### Frontend application
+
+![Frontend application](docs/screenshots/frontend.png)
+
+### API documentation
+
+![Swagger API documentation](docs/screenshots/backend.png)
+
 ## API endpoints
 
 - `POST /auth/login` and `GET /auth/me`
