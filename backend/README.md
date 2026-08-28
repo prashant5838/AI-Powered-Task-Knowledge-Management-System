@@ -1,65 +1,84 @@
-# AI Task & Knowledge MVP (Backend)
+# AI Task & Knowledge MVP
 
-Quick setup:
+## Local setup
 
-1. Create a Python venv and activate it.
+Create a virtual environment and install the backend dependencies from the
+repository root:
 
-```bash
+```powershell
 python -m venv .venv
-source .venv/bin/activate   # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r backend\requirements.txt
 ```
 
-2. Prepare MySQL and environment variables. See `.env.example`.
+### Run locally without Docker
 
-3. Create DB and run the app:
+The local Windows fallback uses SQLite. Run the backend from `backend`:
 
-```bash
-export DATABASE_URL="mysql+pymysql://root:password@127.0.0.1:3306/ai_mvp"
-uvicorn app.main:app --reload
+```powershell
+$env:DATABASE_URL = "sqlite:///./dev.db"
+Set-Location backend
+..\.venv\Scripts\python.exe scripts\init_db.py
+..\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
 ```
 
-Notes:
-- Uses SentenceTransformers locally for embeddings and FAISS for vector store.
-- Endpoints: `/auth/login`, `/tasks`, `/documents/upload`, `/search`, `/analytics`.
+In a second terminal, start the frontend:
 
-Docker (recommended)
---------------------
-The easiest way to run the full stack (with FAISS and sentence-transformers) is via Docker Compose.
-
-1. Build and start services:
-
-```bash
-docker-compose up --build
+```powershell
+Set-Location frontend
+npm.cmd install
+npm.cmd start
 ```
 
-This brings up:
-- MySQL on port `3306`
-- Backend FastAPI on port `8000`
-- Frontend dev server on port `3000`
+Open the application at <http://localhost:3000>. The backend API and Swagger
+documentation are available at <http://localhost:8000> and
+<http://localhost:8000/docs>. The initialized development account is
+`admin@example.com` with password `adminpass`.
 
-Notes:
-- When running locally without Docker on Windows, the project uses a lightweight pure-Python fallback embedding and vector store to avoid native build issues. For production/assessment, use Docker so the real embedding stack (FAISS + sentence-transformers) is installed in a Linux container.
+To use MySQL instead, set `DATABASE_URL` to a reachable MySQL connection before
+starting the backend, for example:
 
-Running tests and generating screenshots
---------------------------------------
-1. Install test dependencies inside the backend venv (or in Docker):
-
-```bash
-cd backend
-pip install -r requirements.txt
+```powershell
+$env:DATABASE_URL = "mysql+pymysql://root:rootpass@127.0.0.1:3306/ai_mvp"
 ```
 
-2. Run tests:
+## Docker
+
+Docker Desktop must be installed and running. From the repository root:
 
 ```bash
-pytest -q
+docker compose up --build
 ```
 
-3. Generate placeholder screenshots (used for submission):
+Docker Compose starts MySQL on port `3306`, the backend on port `8000`, and the
+frontend on port `3000`.
 
-```bash
-python scripts/generate_screenshots.py
+When running locally without Docker on Windows, the project uses SQLite plus a
+lightweight fallback embedding/vector store when the native embedding stack is
+unavailable.
+
+## Tests and screenshots
+
+Run the tests from the backend directory:
+
+```powershell
+Set-Location backend
+..\.venv\Scripts\python.exe -m pytest -q
+```
+
+Generate placeholder screenshots with:
+
+```powershell
+..\.venv\Scripts\python.exe scripts\generate_screenshots.py
 ```
 
 Generated screenshots are saved to `backend/docs/screenshots`.
+
+## API endpoints
+
+- `POST /auth/login` and `GET /auth/me`
+- `GET /tasks` and `POST /tasks`
+- `PATCH /tasks/{task_id}/status`
+- `POST /documents/upload`
+- `GET /search`
+- `GET /analytics`

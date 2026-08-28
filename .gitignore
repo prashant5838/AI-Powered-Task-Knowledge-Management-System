@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.py[cod]
+frontend/node_modules/
+backend/dev.db
+backend/uploads/*
+!backend/uploads/.gitkeep
