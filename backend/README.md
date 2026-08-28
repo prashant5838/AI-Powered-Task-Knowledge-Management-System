@@ -84,6 +84,10 @@ Generated screenshots are saved to `backend/docs/screenshots`.
 
 ![Swagger API documentation](docs/screenshots/backend.png)
 
+### API authorization
+
+![API authorization dialog](proj5.png)
+
 ## API endpoints
 
 - `POST /auth/login` and `GET /auth/me`
